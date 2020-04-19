@@ -1,17 +1,19 @@
 import React, {Component} from 'react';
 import {PropTypes} from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import {TouchableHighlight, StyleSheet} from 'react-native';
+import {TouchableHighlight, StyleSheet, Text} from 'react-native';
 import colors from '../../styles/colors';
 
 export default class NextArrowButton extends Component {
   render() {
-    const {disabled} = this.props;
+    const {disabled, handleNextButton} = this.props;
     const opacityStyle = disabled
       ? {backgroundColor: 'rgba(255,255,255,0.2)'}
       : {backgroundColor: 'rgba(255,255,255,0.6)'};
     return (
-      <TouchableHighlight style={[opacityStyle, styles.button]}>
+      <TouchableHighlight
+        style={[opacityStyle, styles.button]}
+        onPress={handleNextButton}>
         <Icon
           name="angle-right"
           color={colors.green01}
@@ -22,6 +24,11 @@ export default class NextArrowButton extends Component {
     );
   }
 }
+
+NextArrowButton.propTypes = {
+  disabled: PropTypes.bool,
+  handleNextButton: PropTypes.func,
+};
 
 const styles = StyleSheet.create({
   button: {
