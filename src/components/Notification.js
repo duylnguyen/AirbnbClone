@@ -15,7 +15,8 @@ export default class Notification extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      positionValue: new Animated.Value(60),
+      // positionValue: new Animated.Value(60),
+      positionValue: new Animated.Value(-60),
     };
     this.closeNotification = this.closeNotification.bind(this);
     this.animateNotification = this.animateNotification.bind(this);
@@ -25,12 +26,13 @@ export default class Notification extends Component {
     const {positionValue} = this.state;
     Animated.timing(positionValue, {
       toValue: value,
-      duration: 400,
+      // duration: 400,
+      duration: 300,
       velocity: 3,
       tension: 2,
       friction: 8,
       easing: Easing.easeOutBack,
-      useNativeDriver: true,
+      // useNativeDriver: true,
     }).start();
   }
 
@@ -43,11 +45,13 @@ export default class Notification extends Component {
     const {positionValue} = this.state;
     showNotification
       ? this.animateNotification(0)
-      : this.animateNotification(60);
+      : // : this.animateNotification(60);
+        this.animateNotification(-60);
 
     return (
       <Animated.View
-        style={[{transform: [{translateY: positionValue}]}, styles.wrapper]}>
+        // style={[{transform: [{translateY: positionValue}]}, styles.wrapper]}>
+        style={[{marginBottom: positionValue}, styles.wrapper]}>
         <View style={styles.notificationContent}>
           <Text style={styles.errorText}>{type}</Text>
           <Text style={styles.errorMessage}>{firstLine}</Text>
