@@ -1,5 +1,5 @@
-import React, {Component} from 'react';
-import {PropTypes} from 'prop-types';
+import React, { Component } from 'react';
+import { PropTypes } from 'prop-types';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import colors from '../../styles/colors';
 import {
@@ -34,7 +34,7 @@ export default class InputField extends Component {
   }
 
   toggleShowPassword() {
-    this.setState({secureInput: !this.state.secureInput});
+    this.setState({ secureInput: !this.state.secureInput });
   }
 
   render() {
@@ -51,7 +51,7 @@ export default class InputField extends Component {
       autoFocus,
       autoCapitalize,
     } = this.props;
-    const {secureInput, scaleCheckmarkValue} = this.state;
+    const { secureInput, scaleCheckmarkValue } = this.state;
     const fontSize = labelTextSize || 14;
     const color = labelColor || colors.white;
     const inputColor = textColor || colors.white;
@@ -68,7 +68,7 @@ export default class InputField extends Component {
 
     return (
       <View style={[customStyle, styles.wrapper]}>
-        <Text style={[{color, fontSize}, styles.label]}>{labelText}</Text>
+        <Text style={[{ color, fontSize }, styles.label]}>{labelText}</Text>
         {inputType === 'password' ? (
           <TouchableOpacity
             style={styles.showButton}
@@ -79,12 +79,15 @@ export default class InputField extends Component {
           </TouchableOpacity>
         ) : null}
         <Animated.View
-          style={[{transform: [{scale: iconScale}]}, styles.checkmarkWrapper]}>
+          style={[
+            { transform: [{ scale: iconScale }] },
+            styles.checkmarkWrapper,
+          ]}>
           <Icon name="check" color={colors.white} size={20} />
         </Animated.View>
         <TextInput
           style={[
-            {color: inputColor, borderBottomColor: borderBottom},
+            { color: inputColor, borderBottomColor: borderBottom },
             styles.inputField,
           ]}
           secureTextEntry={secureInput}

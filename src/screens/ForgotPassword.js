@@ -1,5 +1,11 @@
-import React, {Component} from 'react';
-import {View, Text, KeyboardAvoidingView, StyleSheet} from 'react-native';
+import React, { Component } from 'react';
+import {
+  View,
+  Text,
+  KeyboardAvoidingView,
+  StyleSheet,
+  ScrollView,
+} from 'react-native';
 import colors from '../styles/colors';
 import InputField from '../components/form/InputField';
 import Notification from '../components/Notification';
@@ -22,21 +28,21 @@ export default class ForgotPassword extends Component {
 
   handleEmailChange(email) {
     const emailCheckRegex = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    this.setState({emailAddress: email});
+    this.setState({ emailAddress: email });
 
     if (!this.state.validEmail) {
       if (emailCheckRegex.test(email)) {
-        this.setState({validEmail: true});
+        this.setState({ validEmail: true });
       }
     } else {
       if (!emailCheckRegex.test(email)) {
-        this.setState({validEmail: false});
+        this.setState({ validEmail: false });
       }
     }
   }
 
   gotoNextStep() {
-    this.setState({loadingVisible: true});
+    this.setState({ loadingVisible: true });
     // Simulate slow server
     setTimeout(() => {
       if (this.state.emailAddress === 'wrong@email.com') {
@@ -54,48 +60,51 @@ export default class ForgotPassword extends Component {
   }
 
   handleCloseNotification() {
-    this.setState({formValid: true});
+    this.setState({ formValid: true });
   }
 
   render() {
-    const {loadingVisible, formValid, validEmail} = this.state;
+    const { loadingVisible, formValid, validEmail } = this.state;
     const background = formValid ? colors.green01 : colors.darkOrange;
     const showNotification = formValid ? false : true;
 
     return (
       <KeyboardAvoidingView
-        style={[{backgroundColor: background}, styles.wrapper]}
+        style={[{ backgroundColor: background }, styles.wrapper]}
         behavior="padding">
-        <View style={styles.form}>
-          <Text style={styles.forgotPasswordHeading}>
-            Forgot your password?
-          </Text>
-          <Text style={styles.forgotPasswordSubheading}>
-            Enter your email to find your account
-          </Text>
-          <InputField
-            customStyle={{marginBottom: 30}}
-            textColor={colors.white}
-            labelText="EMAIL ADDRESS"
-            labelTextSize={14}
-            labelColor={colors.white}
-            borderBottomColor={colors.white}
-            inputType="email"
-            onChangeText={this.handleEmailChange}
-            showCheckmark={validEmail}
+        <View style={styles.scrollViewWrapper}>
+          <ScrollView style={styles.scrollView}>
+            <Text style={styles.forgotPasswordHeading}>
+              Forgot your password?
+            </Text>
+            <Text style={styles.forgotPasswordSubheading}>
+              Enter your email to find your account
+            </Text>
+            <InputField
+              customStyle={{ marginBottom: 30 }}
+              textColor={colors.white}
+              labelText="EMAIL ADDRESS"
+              labelTextSize={14}
+              labelColor={colors.white}
+              borderBottomColor={colors.white}
+              inputType="email"
+              onChangeText={this.handleEmailChange}
+              showCheckmark={validEmail}
+            />
+          </ScrollView>
+          <NextArrowButton
+            handleNextButton={this.gotoNextStep}
+            disabled={!validEmail}
           />
-        </View>
-        <View style={styles.nextButtonWrapper}>
-          <NextArrowButton handleNextButton={this.gotoNextStep} />
-        </View>
-        <View>
-          <Notification
-            showNotification={showNotification}
-            handleCloseNotification={this.handleCloseNotification}
-            type="Error"
-            firstLine="No account exists for the requested"
-            secondLine="email address"
-          />
+          <View style={styles.notificationWrapper}>
+            <Notification
+              showNotification={showNotification}
+              handleCloseNotification={this.handleCloseNotification}
+              type="Error"
+              firstLine="No account exists for the requested"
+              secondLine="email address"
+            />
+          </View>
         </View>
         <Loader modalVisible={loadingVisible} animationType="fade" />
       </KeyboardAvoidingView>
@@ -108,10 +117,14 @@ const styles = StyleSheet.create({
     display: 'flex',
     flex: 1,
   },
-  form: {
-    marginTop: 90,
-    paddingLeft: 20,
-    paddingRight: 20,
+  scrollViewWrapper: {
+    marginTop: 70,
+    flex: 1,
+  },
+  scrollView: {
+    paddingLeft: 30,
+    paddingRight: 30,
+    paddingTop: 20,
     flex: 1,
   },
   forgotPasswordHeading: {
@@ -126,9 +139,8 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginBottom: 60,
   },
-  nextButtonWrapper: {
-    alignItems: 'flex-end',
-    right: 20,
-    bottom: 20,
+  notificationWrapper: {
+    position: 'absolute',
+    bottom: 0,
   },
 });
